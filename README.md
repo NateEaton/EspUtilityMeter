@@ -1,5 +1,12 @@
 # ESPmeter
 
+> This repo is currently a literal fork of espmeter. Here is a high-level description of my goals for this repo:
+> My initial goal was to come up with a way to track water consumption which meant I needed a non-invasive way to measure activity on the water meter out at the street in front of my house. I've managed to get successful readings in HA using a magnetometer sensor connected to an ESP32 using ESPHome; inside the water meter the interface between the valve body and the register has a magnet so every time it makes a rotation it can be measured. I've also gotten readings from the gas meter out by the alley. Before I try a third, measure consumption at the electricity meter with optical sensor, I've got a few things yet to work through. 
+> 1. the magnetometer is a bit like shooting flies with a cannon (and involves more complex code) so I'm ordering a Hall sensor to try instead
+> 2. WiFi connectivity works fine with the gas meter (and would for the electricity meter) but once I close the steel plate cover over the water meter, the ESP32 loses connectivity. Inspired by the Flume 2 (which is pretty much what I am trying to reproduce), I plan to try a LoRa transceiver, sending pulses detected with the Hall sensor to another ESP32 in the house set up with OpenMQTTGateway to send the data to HA. It will take a bit more programming than just using ESPHOME but I'm actually looking forward to that. 
+> 3. Since all these need to be battery-powered and ideally be able to have a battery last for at least 6 months, hopefully a year or more, I've been researching low power architectures. My lean is to build on [esphome](https://github.com/francescovannini/espmeter) by @francescovannini, though having the ESP32 wake and transmit somewhat more often than daily. For the electricity meter, hopefully the ATTiny13 can read and store sensor readings from an optical sensor as well as from a Hall sensor. 
+> As I get further along, I'll start updating this repo, both with the code changes (e.g., related to LoRa, optical sensor, gateway, etc.) and the README. 
+
 ESPmeter helps monitoring domestic gas consumption; a small device captures 
 data from the gas meter which is then sent to a server via HTTP; a web 
 application allows visualizing daily gas consumption with a granularity up to 
